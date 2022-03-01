@@ -51,7 +51,6 @@ function fetchItems() {
       itemsList.innerHTML = newItemHTML;
 
       var itemsListUL = document.querySelectorAll("ul li");
-      console.log(itemsListUL);
       for (var i = 0; i < itemsListUL.length; i++) {
         itemsListUL[i]
           .querySelector(".itemComplete")
@@ -67,6 +66,17 @@ function fetchItems() {
             itemDelete(index);
           });
       }
+      var numberOfIncompleteTasks = itemsArray.filter(
+        (item) => item.status == 0
+      ).length;
+      if (numberOfIncompleteTasks === 0) {
+        chrome.action.setBadgeBackgroundColor({ color: "#00FF00" });
+      } else {
+        chrome.action.setBadgeBackgroundColor({ color: "red" });
+      }
+      chrome.action.setBadgeText({
+        text: numberOfIncompleteTasks.toString(),
+      });
     }
   } catch (e) {
     alert("Some errors occurred while fetching, see in console");
